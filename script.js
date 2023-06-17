@@ -3,17 +3,19 @@ const input_element = document.getElementById('mainInput');
 const list_section = document.getElementById('listSection');
 document.getElementById('submit').addEventListener('click', handleInputSubmit);
 
-let toDos = []
+let toDos = [];
 
-function newToDo(content, number){
+function newToDo(toDo, number){
+    const { content, id } = toDo;
     number = getNumber(number);
+
     const new_li = newElement({
         tagName: 'li',
         contents: [
-            newElement({ tagName: 'p', contents: number}),
-            newElement({ tagName: 'p', contents: content }),
-            newElement({ tagName: 'button',  contents: '❌', listenerArgs: ['click', ()=>removeToDo(content)] }),
-            newElement({ tagName: 'button', contents: '✅', listenerArgs: ['click', ()=>removeToDo(content)] })
+            newElement({ tagName: 'p',      contents: number }),
+            newElement({ tagName: 'p',      contents: content }),
+            newElement({ tagName: 'button', contents: '❌', listenerArgs: ['click', ()=>removeToDo(id)] }),
+            newElement({ tagName: 'button', contents: '✅', listenerArgs: ['click', ()=>removeToDo(id)] })
         ],
         flex: true
     });
@@ -29,9 +31,9 @@ function renderChildren(){
     document.getElementById('listSection').appendChild(list_UL_element);
 }
 
-function removeToDo(content){
-    toDos = toDos.filter(i=>i!=content);
-    renderChildren()
+function removeToDo(id){
+    toDos = toDos.filter(i=>i.id!=id);
+    renderChildren();
 };
 
 function newElement({ tagName, contents, listenerArgs, flex }){
@@ -77,8 +79,8 @@ const getNumber = number => number.toString() + ') ';
 
 function handleInputSubmit(e){
     e.preventDefault();
-    const text = input_element.value;
-    toDos.push(text);
+    const content = input_element.value;
+    toDos.push({content, id: Math.floor(Math.random(10)) + Date.now()});
     renderChildren(list_UL_element);
     input_element.value = "";
 };
