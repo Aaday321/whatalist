@@ -7,13 +7,11 @@ let toDos = [];
 
 function newToDo(toDo, number){
     const { content, id } = toDo;
-    number = getNumber(number);
-
     const new_li = newElement({
         tagName: 'li',
         contents: [
-            newElement({ tagName: 'p',      contents: number }),
-            newElement({ tagName: 'p',      contents: content }),
+            newElement({ tagName: 'p', contents: number.toString() + ') ' }),
+            newElement({ tagName: 'p', contents: content }),
             newElement({ tagName: 'button', contents: '❌', listenerArgs: ['click', ()=>removeToDo(id)] }),
             newElement({ tagName: 'button', contents: '✅', listenerArgs: ['click', ()=>removeToDo(id)] })
         ],
@@ -29,7 +27,7 @@ function renderChildren(){
         list_UL_element.appendChild(newToDo(toDos[i], i+1));
     }
     document.getElementById('listSection').appendChild(list_UL_element);
-}
+};
 
 function removeToDo(id){
     toDos = toDos.filter(i=>i.id!=id);
@@ -68,26 +66,16 @@ function newElement({ tagName, contents, listenerArgs, flex }){
         }
     }
 
-    if(flex) myElement.style.display = "flex";
-    
-    
+    if(flex) myElement.style.display = "flex";   
 
     return myElement;
 };
-
-const getNumber = number => number.toString() + ') ';
 
 function handleInputSubmit(e){
     e.preventDefault();
     const content = input_element.value;
     if(!content) return;
     toDos.push({content, id: Math.floor(Math.random(10)) + Date.now()});
-    renderChildren(list_UL_element);
+    list_UL_element.appendChild(newToDo(toDos[toDos.length-1], toDos.length));
     input_element.value = "";
 };
-
-async function fetchToDos(){
-    const toDos = await fetch('http://127.0.0.1:4015/');
-    console.log(toDos);
-};
-
