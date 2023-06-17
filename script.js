@@ -80,6 +80,7 @@ const getNumber = number => number.toString() + ') ';
 function handleInputSubmit(e){
     e.preventDefault();
     const content = input_element.value;
+    if(!content) return;
     toDos.push({content, id: Math.floor(Math.random(10)) + Date.now()});
     renderChildren(list_UL_element);
     input_element.value = "";
