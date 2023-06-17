@@ -10,8 +10,7 @@ function newToDo(toDo, number){
     const new_li = newElement({
         tagName: 'li',
         contents: [
-            newElement({ tagName: 'p', contents: number.toString() + ') ' }),
-            newElement({ tagName: 'p', contents: content }),
+            newElement({ tagName: 'p', contents: `${number}) ${content}` }),
             newElement({ tagName: 'button', contents: '❌', listenerArgs: ['click', ()=>removeToDo(id)] }),
             newElement({ tagName: 'button', contents: '✅', listenerArgs: ['click', ()=>removeToDo(id)] })
         ],
