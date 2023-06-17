@@ -12,13 +12,17 @@ function newToDo(content, number){
         contents: [
             newElement({ tagName: 'p', contents: number}),
             newElement({ tagName: 'p', contents: content }),
-            newElement({ tagName: 'button',  contents: '❌', listenerArgs: ['click', ()=>removeToDo(content)] }),
-            newElement({ tagName: 'button', contents: '✅', listenerArgs: ['click', ()=>removeToDo(content)] })
+            newElement({ tagName: 'button',  contents: '❌', listenerArgs: ['click', ()=>removeToDo(content, number, new_li)] }),
+            newElement({ tagName: 'button', contents: '✅', listenerArgs: ['click', ()=>removeToDo(content, number, new_li)] })
         ],
         flex: true
     });
     return new_li;
 };
+
+function addDeleteMeEventListener(){
+
+}
 
 function renderChildren(){
     list_section.removeChild(list_UL_element);
@@ -29,9 +33,17 @@ function renderChildren(){
     document.getElementById('listSection').appendChild(list_UL_element);
 }
 
-function removeToDo(content){
+function rerenderOne(parent, child){
+    try{
+        parent.removeChild(child);
+    } catch(err){
+        console.log({err});
+    }
+}
+
+function removeToDo(content, number, element){
     toDos = toDos.filter(i=>i!=content);
-    renderChildren()
+    rerenderOne(list_UL_element, element);
 };
 
 function newElement({ tagName, contents, listenerArgs, flex }){
