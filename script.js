@@ -34,10 +34,8 @@ function removeToDo(id){
 };
 
 function newElement({ tagName, contents, listenerArgs, flex }){
-
     //Create new element
     const myElement = document.createElement(tagName);
-
     //Handle DOM elements and text as content
     if(contents){
         if(Array.isArray(contents)) {
@@ -48,7 +46,6 @@ function newElement({ tagName, contents, listenerArgs, flex }){
         } else if(typeof contents === 'string') myElement.innerText = contents;
         else if(contents instanceof HTMLElement) myElement.appendChild(contents);
     }
-
     //register event listeners if we have any
     if(listenerArgs){
         //Handle many event listeners
@@ -64,9 +61,7 @@ function newElement({ tagName, contents, listenerArgs, flex }){
             myElement.addEventListener(eventType, action);
         }
     }
-
     if(flex) myElement.style.display = "flex";   
-
     return myElement;
 };
 
@@ -75,6 +70,7 @@ function handleInputSubmit(e){
     const content = input_element.value;
     if(!content) return;
     toDos.push({content, id: Math.floor(Math.random(10)) + Date.now()});
-    list_UL_element.appendChild(newToDo(toDos[toDos.length-1], toDos.length));
+    const lastIndex = toDos.length-1;
+    list_UL_element.appendChild(newToDo(toDos[lastIndex], lastIndex+1));
     input_element.value = "";
 };
