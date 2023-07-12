@@ -8,20 +8,20 @@ let toDos = [];
 function newToDo(toDo, number){
     const { content, id } = toDo;
     const new_li = newElement({
+        key: id,
         tagName: 'li',
         contents: [
             newElement({ tagName: 'p', contents: `${number}) ${content}` }),
             newElement({ tagName: 'button', contents: '❌', listenerArgs: ['click', ()=>removeToDo(id)] }),
             newElement({ tagName: 'button', contents: '✅', listenerArgs: ['click', ()=>removeToDo(id)] })
         ],
-        flex: true
+        styles: { display: 'flex' }
     });
     return new_li;
 };
 
 function renderChildren(){
-    list_section.removeChild(list_UL_element);
-    list_UL_element = document.createElement('ul');
+
     for(let i=0; i<toDos.length; i++){
         list_UL_element.appendChild(newToDo(toDos[i], i+1));
     }
@@ -33,7 +33,7 @@ function removeToDo(id){
     renderChildren();
 };
 
-function newElement({ tagName, contents, listenerArgs, flex }){
+function newElement({ tagName, contents, listenerArgs, styles, key }){
     //Create new element
     const myElement = document.createElement(tagName);
     //Handle DOM elements and text as content
@@ -61,7 +61,11 @@ function newElement({ tagName, contents, listenerArgs, flex }){
             myElement.addEventListener(eventType, action);
         }
     }
-    if(flex) myElement.style.display = "flex";   
+    
+    if(styles) Object.assign(myElement.styles, styles);
+    
+    myElement.setAttribute("data-key", key);
+
     return myElement;
 };
 
